@@ -96,10 +96,7 @@ public class Main {
             elenco.add(p);
             System.out.println(elenco + "\n");
         }
-
-
-    }
-
+     }
     static void stampaElencoPazienti(ArrayList<Paziente> elenco) throws IOException, ClassNotFoundException {
 
         for (i = 0; i < elenco.size(); i++) {
@@ -107,9 +104,6 @@ public class Main {
         }
 
     }
-
-
-
     public static void caricaFileBinario(ArrayList<Paziente> elencoP) throws IOException, ClassNotFoundException {// alunno in un FILE BIANARIO tramite la serializzazione
 
         ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("bin"));
@@ -123,39 +117,4 @@ public class Main {
 
 
     }
-
-    public ArrayList<Paziente> caricaFile(ArrayList<Paziente> elenco) throws IOException, ClassNotFoundException {
-
-
-        String fileName = "bin.bin";
-        FileInputStream fis = new FileInputStream(fileName);
-
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
-        Object obj = ois.readObject();
-
-        elenco = (ArrayList<Paziente>) obj;
-
-        ois.close();
-        return elenco;
-    } public void leggiFile(ArrayList<Paziente>elencoP) throws IOException, ClassNotFoundException {
-        ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("bin.bin"));
-        fbinarioOut.writeObject(elencoP);
-        fbinarioOut.flush();
-        fbinarioOut.close();
-
-        ObjectInputStream fin = new ObjectInputStream(new FileInputStream("bin.bin"));
-        elencoP = (ArrayList<Paziente>) fin.readObject();
-
-        System.out.println(elencoP);
-
-
-        PrintWriter ftestoOut = new PrintWriter(new FileWriter("bin.txt"));
-        ftestoOut.println(elencoP);
-        ftestoOut.close();
-
-
-    }
-
-
 }
