@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-
 
 public class Paziente
         extends Persona implements Serializable {
@@ -8,13 +6,8 @@ public class Paziente
     public String cognome;
     public String codice_fiscale;
     public String indirizzo;
-
-
     public int code_prenotazione;
     public String num_telefono;
-
-
-
     public Paziente(String nome, String cognome, String codice, String numero, String indirizzo, int i) {
         this.nome = nome;
         this.cognome = cognome;
@@ -23,7 +16,6 @@ public class Paziente
         this.indirizzo = indirizzo;
         this.code_prenotazione = i;
     }
-
     public Paziente(Paziente paziente) {
         this.nome = paziente.nome;
         this.cognome = paziente.cognome;
@@ -33,6 +25,9 @@ public class Paziente
         this.code_prenotazione = paziente.code_prenotazione;
     }
 
+    public Paziente() {
+
+    }
 
     void setCode_prenotazione(int codice) {
         this.code_prenotazione = codice;

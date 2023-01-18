@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,12 +13,24 @@ public class Appuntamento {
     private Date data;
     private String descrizione;
 
-    public Appuntamento(String descrizione, String ora_inizio, String ora_fine, Paziente cliente) {
+    public Appuntamento(String descrizione, String ora_inizio, String ora_fine, Paziente paziente, Dottore dottore) {
+        this.cliente.nome = paziente.nome;
+        this.cliente.cognome = paziente.cognome;
+        this.cliente.indirizzo = paziente.indirizzo;
+        this.cliente.num_telefono = paziente.num_telefono;
+        this.cliente.code_prenotazione = paziente.code_prenotazione;
+        this.cliente.codice_fiscale = paziente.codice_fiscale;
+        this.medico.nome = dottore.nome;
+        this.medico.cognome = dottore.cognome;
+        this.medico.codice_fiscale = dottore.codice_fiscale;
+        this.medico.indirizzo = dottore.indirizzo;
         this.descrizione = descrizione;
         this.ora_inizio = ora_inizio;
         this.ora_fine = ora_fine;
-        this.cliente = cliente;
+
     }
+
+
 
     public String getDescrizione() {
 
@@ -46,9 +57,10 @@ public class Appuntamento {
         return medico;
     }
 
-    void aggiungiAppuntamento(ArrayList<Paziente>lista) {
+    void aggiungiAppuntamento(ArrayList<Appuntamento>lista) {
 
-        int i = 0;
+        Appuntamento a = null;
+
         Scanner scanner = new Scanner(System.in);
         ArrayList<Appuntamento> elencoAppuntamenti = new ArrayList<>();
         System.out.println("Inserire le informazioni del paziente nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo");
@@ -60,13 +72,14 @@ public class Appuntamento {
                 break;
             }
             String[] arr = s.split(",");
-            String descrizione = arr[0];
+
             String ora_inizio = arr[1];
             String ora_fine = arr[2];
-            Paziente cliente = new Paziente(lista.get(i));
+            Paziente cliente = new Paziente();
+            Dottore dottore = new Dottore();
 
 
-            Appuntamento p = new Appuntamento(descrizione, ora_inizio, ora_fine, cliente);
+            Appuntamento p = new Appuntamento(descrizione, ora_inizio, ora_fine, cliente, dottore);
             elencoAppuntamenti.add(p);
 
         }
