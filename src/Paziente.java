@@ -8,6 +8,8 @@ public class Paziente
     public String indirizzo;
     public int code_prenotazione;
     public String num_telefono;
+
+    public String password;
     public Paziente(String nome, String cognome, String codice, String numero, String indirizzo, int i) {
         this.nome = nome;
         this.cognome = cognome;
@@ -15,34 +17,82 @@ public class Paziente
         this.num_telefono = numero;
         this.indirizzo = indirizzo;
         this.code_prenotazione = i;
-    }
-    public Paziente(Paziente paziente) {
-        this.nome = paziente.nome;
-        this.cognome = paziente.cognome;
-        this.codice_fiscale = paziente.codice_fiscale;
-        this.indirizzo = paziente.indirizzo;
-        this.num_telefono = paziente.num_telefono;
-        this.code_prenotazione = paziente.code_prenotazione;
+        this.password = "0000";
+
     }
 
     public Paziente() {
-
+        this.nome = nome;
+        this.cognome = cognome;
+        this.codice_fiscale = codice_fiscale;
+        this.num_telefono = num_telefono;
+        this.indirizzo = indirizzo;
+        this.code_prenotazione = code_prenotazione;
+        this.password = "0000";
     }
 
-    void setCode_prenotazione(int codice) {
-        this.code_prenotazione = codice;
-    }
-
-    int getCode_prenotazione() {
+    public int getCode_prenotazione() {
         return code_prenotazione;
     }
 
-    String getNum_telefono() {
+    public void setCode_prenotazione(int code_prenotazione) {
+        this.code_prenotazione = code_prenotazione;
+    }
+
+    public String getNum_telefono() {
         return num_telefono;
     }
 
-    void setNum_telefono(String numero) {
-        this.num_telefono = numero;
+    public void setNum_telefono(String num_telefono) {
+        this.num_telefono = num_telefono;
+    }
+
+    @Override
+    public String getNome() {
+        return nome;
+    }
+
+    @Override
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public String getCognome() {
+        return cognome;
+    }
+
+    @Override
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    @Override
+    public String getCodice_fiscale() {
+        return codice_fiscale;
+    }
+
+    @Override
+    public void setCodice_fiscale(String codice_fiscale) {
+        this.codice_fiscale = codice_fiscale;
+    }
+
+    @Override
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    @Override
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

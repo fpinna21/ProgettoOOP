@@ -5,11 +5,13 @@ public class Main {
     public static Scanner in = new Scanner(System.in);
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ArrayList<Paziente> elencopazienti;
-        try{
+        int indice =0;
+        Paziente paziente = new Paziente();
+        try {
             ObjectInputStream fin = new ObjectInputStream(new FileInputStream("ElencoPazienti"));
             elencopazienti = (ArrayList<Paziente>) fin.readObject();
             System.out.println("Caricare file binary");
-        } catch (IOException|ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             elencopazienti = new ArrayList<>();
             caricaFileBinario(elencopazienti);
         }
@@ -22,19 +24,42 @@ public class Main {
         int scelta = in.nextInt();
         switch (scelta) {
             case 1:
-                aggiungiPaziente(elencopazienti);
                 System.out.println("""
-                        Menu :\s
-                         1)prendere appuntamento
-                         2)cancellare appuntamento
-                         3)contattare segreteria
-                         4)indietro""");
+                        Menu:\s
+                        1)cliente esistente
+                        2)nuovo cliente""");
+                switch (scelta) {
+                    case 1:
+
+                        System.out.println("Scrivere il proprio codice fiscale");
+                        String codiceF = in.next();
+                        i = cercaPaziente(elencopazienti, codiceF);
+                        paziente = elencopazienti.get(i);
+                        String password = in.next();
+                        if (paziente.password == password) {
+                            System.out.println("""
+                                    Menu :\s
+                                     1)prendere appuntamento
+                                     2)cancellare appuntamento
+                                     3)contattare segreteria
+                                     4)indietro""");
+                            scelta = in.nextInt();
+                            switch (scelta) {
+                                case 1:
+
+
+                            }
+                        }
+                    case 2:
+                        aggiungiPaziente(elencopazienti);
+
+                }
             case 2:
                 System.out.println("""
                         Menu :\s
                          1)modificare appuntamento
                          2)spostare appuntamento
-                         3)aggiungere cliente
+                         3)aggiungere clienti
                          4)indietro""");
 
                 scelta = in.nextInt();
@@ -52,7 +77,8 @@ public class Main {
                                 "\n inserire ora e giorno dell'appuntamento:");
 
                     case 3:
-
+                        aggiungiPaziente(elencopazienti);
+                        break;
 
                     case 4:
                         break;
@@ -61,6 +87,7 @@ public class Main {
         }
         caricaFileBinario(elencopazienti);
     }
+
     static int i = 100000;
      static void aggiungiPaziente(ArrayList<Paziente>elenco) {
 
@@ -103,6 +130,14 @@ public class Main {
         ftestoOut.close();
      }
 
-
+     public static int cercaPaziente(ArrayList<Paziente>elencoP,String codice_fiscale){
+        i=0;
+         for(Paziente paziente: elencoP){
+             if(paziente.codice_fiscale.equals(codice_fiscale) ){
+                 i=elencoP.indexOf(paziente);
+             }
+         }
+         return i;
+    }
 
 }
