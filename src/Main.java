@@ -2,12 +2,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.*;
 public class Main {
-
     public static Scanner in = new Scanner(System.in);
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ArrayList<Paziente> elencopazienti;
         try{
-            ObjectInputStream fin = new ObjectInputStream(new FileInputStream("bin"));
+            ObjectInputStream fin = new ObjectInputStream(new FileInputStream("ElencoPazienti"));
             elencopazienti = (ArrayList<Paziente>) fin.readObject();
             System.out.println("Caricare file binary");
         } catch (IOException|ClassNotFoundException e){
@@ -35,7 +34,8 @@ public class Main {
                         Menu :\s
                          1)modificare appuntamento
                          2)spostare appuntamento
-                         3)indietro""");
+                         3)aggiungere cliente
+                         4)indietro""");
 
                 scelta = in.nextInt();
                 switch (scelta) {
@@ -70,12 +70,10 @@ public class Main {
 
         System.out.println("Inserire le informazioni del paziente nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo");
         System.out.println("Quando hai terminato inserisci 'stop' per uscire");
-        while (true) {
+
 
             String s = scanner.nextLine();
-            if (s.equals("stop")) {
-                break;
-            }
+
             String[] arr = s.split(",");
             p.nome = arr[0];
             p.cognome = arr[1];
@@ -86,7 +84,7 @@ public class Main {
 
             elenco.add(p);
             System.out.println(elenco + "\n");
-        }
+
      }
     static void stampaElencoPazienti(ArrayList<Paziente> elenco) {
 
@@ -96,12 +94,15 @@ public class Main {
      }
     public static void caricaFileBinario(ArrayList<Paziente> elencoP) throws IOException, ClassNotFoundException {// alunno in un FILE BIANARIO tramite la serializzazione
 
-        ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("bin"));
+        ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoPazienti"));
         fbinarioOut.writeObject(elencoP);
         fbinarioOut.flush();
         fbinarioOut.close();
-        PrintWriter ftestoOut = new PrintWriter(new FileWriter("bin.txt"));
+        PrintWriter ftestoOut = new PrintWriter(new FileWriter("ElencoPazienti.txt"));
         ftestoOut.println(elencoP);
         ftestoOut.close();
      }
+
+
+
 }

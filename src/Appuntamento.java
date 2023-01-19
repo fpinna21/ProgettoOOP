@@ -4,15 +4,13 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Appuntamento {
-    HashMap<String, ArrayList<Paziente>> h = new HashMap<String, ArrayList<Paziente>>();
+    HashMap<Dottore , ArrayList<Paziente>> h = new HashMap<Dottore, ArrayList<Paziente>>();
     private String ora_inizio;
     private String ora_fine;
     private Paziente cliente;
     private Dottore medico;
-
     private Date data;
     private String descrizione;
-
     public Appuntamento(String descrizione, String ora_inizio, String ora_fine, Paziente paziente, Dottore dottore) {
         this.cliente.nome = paziente.nome;
         this.cliente.cognome = paziente.cognome;
@@ -27,36 +25,27 @@ public class Appuntamento {
         this.descrizione = descrizione;
         this.ora_inizio = ora_inizio;
         this.ora_fine = ora_fine;
-
     }
-
-
-
     public String getDescrizione() {
 
         return descrizione;
     }
-
     public String getOra_inizio() {
 
         return ora_inizio;
     }
-
     public String getOra_fine() {
 
         return ora_fine;
     }
-
     public Paziente getCliente() {
 
         return cliente;
     }
-
     public Dottore getMedico(){
 
         return medico;
     }
-
     void aggiungiAppuntamento(ArrayList<Appuntamento>lista) {
 
         Appuntamento a = null;
@@ -72,22 +61,14 @@ public class Appuntamento {
                 break;
             }
             String[] arr = s.split(",");
-
             String ora_inizio = arr[1];
             String ora_fine = arr[2];
             Paziente cliente = new Paziente();
             Dottore dottore = new Dottore();
-
-
             Appuntamento p = new Appuntamento(descrizione, ora_inizio, ora_fine, cliente, dottore);
             elencoAppuntamenti.add(p);
-
         }
     }
-
-
-
-
 }
 
 

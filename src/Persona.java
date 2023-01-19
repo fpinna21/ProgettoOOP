@@ -49,4 +49,5 @@ public class Persona  {
     void setIndirizzo(String indirizzo1){
         this.indirizzo = indirizzo1;
     }
+
 }
