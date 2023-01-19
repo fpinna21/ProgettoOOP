@@ -1,21 +1,24 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Dottore
-        extends Persona {
+        extends Persona implements Serializable {
     public String nome;
     public String cognome;
     public String codice_fiscale;
     public String indirizzo;
-    private String specializzazione;
-    private String password;
+    public String specializzazione;
+    public String password;
+    public String numero_telefono;
 
-    public Dottore(String codice_fiscale, String nome, String cognome, String indirizzo, String nome1, String cognome1, String codice_fiscale1, String indirizzo1, String specializzazione) {
+    public Dottore(String codice_fiscale, String nome, String cognome, String indirizzo, String specializzazione, String numero_telefono) {
         super(codice_fiscale, nome, cognome, indirizzo);
-        this.nome = nome1;
-        this.cognome = cognome1;
-        this.codice_fiscale = codice_fiscale1;
-        this.indirizzo = indirizzo1;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.codice_fiscale = codice_fiscale;
+        this.indirizzo = indirizzo;
+        this.numero_telefono = numero_telefono;
         this.specializzazione = specializzazione;
         this.password = password;
     }

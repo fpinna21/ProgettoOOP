@@ -29,6 +29,7 @@ public class Paziente
         this.indirizzo = indirizzo;
         this.code_prenotazione = code_prenotazione;
         this.password = "0000";
+
     }
 
     public int getCode_prenotazione() {
