@@ -8,6 +8,7 @@ public class Dottore
     public String codice_fiscale;
     public String indirizzo;
     private String specializzazione;
+    private String password;
 
     public Dottore(String codice_fiscale, String nome, String cognome, String indirizzo, String nome1, String cognome1, String codice_fiscale1, String indirizzo1, String specializzazione) {
         super(codice_fiscale, nome, cognome, indirizzo);
@@ -16,6 +17,7 @@ public class Dottore
         this.codice_fiscale = codice_fiscale1;
         this.indirizzo = indirizzo1;
         this.specializzazione = specializzazione;
+        this.password = password;
     }
     public Dottore() {
         super();
@@ -24,6 +26,7 @@ public class Dottore
         this.codice_fiscale = codice_fiscale;
         this.indirizzo = indirizzo;
         this.specializzazione = specializzazione;
+        this.password = password;
     }
 
     String getSpecializzazione() {

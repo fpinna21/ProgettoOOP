@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Appuntamento {
-    HashMap<Dottore , ArrayList<Paziente>> h = new HashMap<Dottore, ArrayList<Paziente>>();
+
     private String ora_inizio;
     private String ora_fine;
     private Paziente cliente;
