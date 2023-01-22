@@ -1,6 +1,4 @@
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Dottore
         extends Persona implements Serializable {
@@ -12,16 +10,6 @@ public class Dottore
     public String password;
     public String numero_telefono;
 
-    public Dottore(String codice_fiscale, String nome, String cognome, String indirizzo, String specializzazione, String numero_telefono) {
-        super(codice_fiscale, nome, cognome, indirizzo);
-        this.nome = nome;
-        this.cognome = cognome;
-        this.codice_fiscale = codice_fiscale;
-        this.indirizzo = indirizzo;
-        this.numero_telefono = numero_telefono;
-        this.specializzazione = specializzazione;
-        this.password = password;
-    }
     public Dottore() {
         super();
         this.nome = nome;
@@ -30,41 +18,81 @@ public class Dottore
         this.indirizzo = indirizzo;
         this.specializzazione = specializzazione;
         this.password = password;
+        this.numero_telefono = numero_telefono;
+    }
+
+    public Dottore(String s, String s1, String s2, String s3, String s4, String s5) {
+        this.nome = s;
+        this.cognome = s1;
+        this.codice_fiscale = s2;
+        this.indirizzo = s3;
+        this.specializzazione = s4;
+        this.password = "0000";
+        this.numero_telefono = s5;
     }
 
     String getSpecializzazione() {
-
         return specializzazione;
     }
-static int i=0;
-    static void aggiungiPaziente(ArrayList<Paziente> elenco) {
+    @Override
+    public String getNome() {
+        return super.getNome();
+    }
 
-        Paziente p = new Paziente("0","0","0","0","0",0);
+    @Override
+    void setNome(String nome1) {
+        super.setNome(nome1);
+    }
 
-        Scanner scanner = new Scanner(System.in);
+    @Override
+    public String getCognome() {
+        return super.getCognome();
+    }
 
-        System.out.println("Inserire le informazioni del paziente nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo");
-        System.out.println("Quando hai terminato inserisci 'stop' per uscire");
-        while (true) {
+    @Override
+    void setCognome(String cognome1) {
+        super.setCognome(cognome1);
+    }
 
-            String s = scanner.nextLine();
-            if (s.equals("stop")) {
-                break;
-            }
-            String[] arr = s.split(",");
-            p.nome = arr[0];
-            p.cognome = arr[1];
-            p.codice_fiscale = arr[2];
-            p.num_telefono = arr[3];
-            p.indirizzo = arr[4];
-            int utente =  i++ ;
+    @Override
+    public String getCodice_fiscale() {
+        return super.getCodice_fiscale();
+    }
 
-            elenco.add(p);
-            System.out.println(elenco + "\n");
-        }
+    @Override
+    void setCodice_fiscale(String codice_fiscale1) {
+        super.setCodice_fiscale(codice_fiscale1);
+    }
+
+    @Override
+    public String getIndirizzo() {
+        return super.getIndirizzo();
+    }
+
+    @Override
+    void setIndirizzo(String indirizzo1) {
+        super.setIndirizzo(indirizzo1);
+    }
+    public void setSpecializzazione(String specializzazione) {
+        this.specializzazione = specializzazione;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNumero_telefono() {
+        return numero_telefono;
+    }
+
+    public void setNumero_telefono(String numero_telefono) {
+        this.numero_telefono = numero_telefono;
     }
 }
 
 
 
-// radiologo,fisioterapista,chirurgo,ortopedico//

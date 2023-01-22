@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class Paziente
         extends Persona implements Serializable {
@@ -8,7 +9,6 @@ public class Paziente
     public String indirizzo;
     public int code_prenotazione;
     public String num_telefono;
-
     public String password;
     public Paziente(String nome, String cognome, String codice, String numero, String indirizzo, int i) {
         this.nome = nome;
@@ -95,7 +95,6 @@ public class Paziente
     public void setPassword(String password) {
         this.password = password;
     }
-
     @Override
     public String toString() {
         return "Paziente{" +

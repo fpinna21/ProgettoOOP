@@ -2,11 +2,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.*;
-public class Main {
+public class Main implements Serializable {
     public static Scanner in = new Scanner(System.in);
-
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        HashMap<Dottore, ArrayList<Appuntamento>> h = new HashMap();
 
+        h = leggiAppuntamenti(h);
         ArrayList<Paziente> elencopazienti = new ArrayList<>();
         ArrayList<Dottore> elencomedici = new ArrayList<>();
         int indice;
@@ -15,8 +16,7 @@ public class Main {
         Paziente paziente;
         elencopazienti = leggiPazienti(elencopazienti);
         elencomedici = leggiDottori(elencomedici);
-        stampaElencoPazienti(elencopazienti);
-
+        // stampaElencoPazienti(elencopazienti);
         System.out.println("""
                 Menu :\s
                  1)paziente
@@ -35,7 +35,7 @@ public class Main {
                         System.out.println("Scrivere il proprio codice fiscale");
                         String codiceF = in.next();
                         indice = cercaPaziente(elencopazienti, codiceF);
-                        paziente = elencopazienti.get(indice);
+                         paziente = elencopazienti.get(indice);
                         System.out.println("inserire la password");
                         String password = in.next();
                         if (paziente.password.equals(password)) {
@@ -47,63 +47,99 @@ public class Main {
                                      4)cambiare password
                                      5)indietro""");
 
-
                             scelta = in.nextInt();
                             switch (scelta) {
                                 case 1:
-
+                                    System.out.println("""
+                                            Menu :\s
+                                             1)fisioterapista
+                                             2)ortopedico
+                                             3)chirurgo
+                                             4)radiologo""");
+                                    scelta = in.nextInt();
+                                    switch (scelta) {
+                                        case 1:
+                                            int i;
+                                            int p = 0;
+                                            for (i = 0; i < elencomedici.size(); i++) {
+                                                if (elencomedici.get(i).specializzazione.equals("fisioterapista")){
+                                                    System.out.println(elencomedici.get(i));
+                                                    System.out.print("inserire numero: ");
+                                                    System.out.println(i);
+                                                    p++;
+                                                }
+                                            }
+                                            if (p < 1) {
+                                                System.out.println("non abbiamo professionisti in questo ambito");
+                                                break;
+                                            } else {
+                                                System.out.println("scegli il tuo professionista");
+                                                int f = in.nextInt();
+                                                aggiungiAppuntamento(h, paziente, elencomedici.get(f));
+                                                caricaAppuntamenti(h);
+                                                break;
+                                            }
+                                    }break;
                                 case 2:
+                                    System.out.println("Menu :" +
+                                            "\n inserire ora e giorno dell'appuntamento:");
 
                                 case 3:
+                                    aggiungiPaziente(elencopazienti);
+                                    break;
 
                                 case 4:
                                     System.out.println("inserire nuova password");
                                     paziente.password = in.next();
-                                    elencopazienti.set(indice, paziente);
+                                    elencopazienti.set(elencopazienti.indexOf(paziente), paziente);
                                     caricaFileBinario(elencopazienti, elencomedici);
                                     System.out.println("password cambiata correttamente");
+                                    break;
                             }
-                            break;
-                        } else {
-                            System.out.println("password errata");
-                            break;
-                        }
-                        case 2:
-                        aggiungiPaziente(elencopazienti);
-                        caricaFileBinario(elencopazienti, elencomedici);
-                        paziente = elencopazienti.get(elencopazienti.size()-1);
-                            /*System.out.println("Scrivere il proprio codice fiscale");
-                            String codiceFi = in.next();
-                            indice = cercaPaziente(elencopazienti, codiceFi);
-                            paziente = elencopazienti.get(indice);*/
-
-                            System.out.println("inserire la password");
-                            String password1 = in.next();
-                            if(password1 == paziente.password){
-                                System.out.println("password corretta");
-                            }
-
-                        System.out.println("""
-                                Menu :\s
-                                 1)prendere appuntamento
-                                 2)cancellare appuntamento
-                                 3)contattare segreteria
-                                 4)cambio password
-                                 5)indietro""");
-                        scelta = in.nextInt();
-                        switch (scelta) {
-                            case 1:
-                            case 2:
-                            case 3:
-                            case 4:
-                                System.out.println("inserire nuova password");
-                                paziente.password = in.next();
-                                elencopazienti.set(elencopazienti.indexOf(paziente), paziente);
-                                caricaFileBinario(elencopazienti, elencomedici);
-                                System.out.println("password cambiata correttamente");
-                        }
-                }
+                        }break;
             case 2:
+                aggiungiPaziente(elencopazienti);
+                caricaFileBinario(elencopazienti, elencomedici);
+                paziente = elencopazienti.get(elencopazienti.size() - 1);
+                System.out.println("inserire la password");
+                String password1 = in.next();
+                if (password1 == paziente.password) {
+                    System.out.println("password corretta");
+                    System.out.println("""
+                            Menu :\s
+                             1)prendere appuntamento
+                             2)cancellare appuntamento
+                             3)contattare segreteria
+                             4)cambio password
+                             5)indietro""");
+                    scelta = in.nextInt();
+                    switch (scelta) {
+                        case 1:
+                            System.out.println("""
+                                    Menu :\s
+                                     1)fisioterapista
+                                     2)ortopedico
+                                     3)chirurgo
+                                     4)radiologo""");
+
+
+                        case 2:
+                            aggiungiPaziente(elencopazienti);
+                            break;
+
+                        case 4:
+                            System.out.println("inserire nuova password");
+                            paziente.password = in.next();
+                            elencopazienti.set(elencopazienti.indexOf(paziente), paziente);
+                            caricaFileBinario(elencopazienti, elencomedici);
+                            System.out.println("password cambiata correttamente");
+                            break;
+                    }
+                } else {
+                    System.out.println("password errata");
+                }
+
+    }case 2:
                 System.out.println("""
                         Menu:\s
                         1)medico esistente
@@ -117,39 +153,22 @@ public class Main {
                         dottore = elencomedici.get(indice);
                         System.out.println("inserire la password");
                         String password = in.next();
-                        if (dottore.password.equals(password))
-
-                    System.out.println("""
-                            Menu :\s
-                             1)modificare appuntamento
-                             2)spostare appuntamento
-                             3)aggiungere clienti
-                             4)indietro""");
-                    case 2:
-                        aggiungiDottore(elencomedici);
-                        caricaFileBinario(elencopazienti,elencomedici);
-
-                    scelta = in.nextInt();
-                    switch (scelta) {
-                        case 1:
+                        if (dottore.password.equals(password)) {
                             System.out.println("""
                                     Menu :\s
-                                     1)fisioterapista
-                                     2)ortopedico
-                                     3)chirurgo
-                                     4)radiologo""");
-
-                        case 2:
-                            System.out.println("Menu :" +
-                                    "\n inserire ora e giorno dell'appuntamento:");
-
-                        case 3:
-                            aggiungiPaziente(elencopazienti);
+                                     1)modificare appuntamento
+                                     2)spostare appuntamento
+                                     3)aggiungere clienti
+                                     4)indietro""");
+                        }else {
+                            System.out.println("password errata");
                             break;
-
-                        case 4:
-                            break;
-                    }
+                        }
+                    case 2:
+                        elencomedici=aggiungiDottore(elencomedici,h);
+                        caricaMedici(elencomedici);
+                        stampaElencoMedici(elencomedici);
+                        break;
                 }
         }
     }
@@ -158,9 +177,8 @@ public class Main {
            FileInputStream cin = new FileInputStream("ElencoPazienti");
             ObjectInputStream fin = new ObjectInputStream(cin);
             elencopazienti = (ArrayList<Paziente>) fin.readObject();
-            System.out.println("Caricare file binary");
 
-        } catch (IOException | ClassNotFoundException e) {
+       } catch (IOException | ClassNotFoundException e) {
 
            ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoPazienti"));
            fbinarioOut.writeObject(elencopazienti);
@@ -171,31 +189,13 @@ public class Main {
            ftestoOut.close();
         }
        return elencopazienti;
+
     }
-    static void aggiungiPaziente(ArrayList<Paziente>elenco) {
-
-        Paziente p = new Paziente("0","0","0","0","0",0);
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Inserire le informazioni del paziente nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo");
-        System.out.println("Quando hai terminato inserisci 'stop' per uscire");
-
-        String s = scanner.nextLine();
-
-        String[] arr = s.split(",");
-        p.nome = arr[0];
-        p.cognome = arr[1];
-        p.codice_fiscale = arr[2];
-        p.num_telefono = arr[3];
-        p.indirizzo = arr[4];
-        p.code_prenotazione = 0 ;
-        p.password = "0000";
-
-        elenco.add(p);
-
-        System.out.println(elenco + "\n");
-
+    static void stampaElencoMedici(ArrayList<Dottore> elenco) {
+        int i =0;
+        for (i = 0; i < elenco.size(); i++) {
+            System.out.print(elenco.get(i) + "\n");
+        }
     }
     static void stampaElencoPazienti(ArrayList<Paziente> elenco) {
         int i =0;
@@ -203,7 +203,7 @@ public class Main {
             System.out.print(elenco.get(i) + "\n");
         }
     }
-    public static void caricaFileBinario(ArrayList<Paziente> elencoP, ArrayList<Dottore>elencoM) throws IOException, ClassNotFoundException {
+    public static void caricaFileBinario(ArrayList<Paziente> elencoP, ArrayList<Dottore>elencoM) throws IOException {
 
         ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoPazienti"));
         fbinarioOut.writeObject(elencoP);
@@ -230,75 +230,137 @@ public class Main {
         }
         return i;
     }
-    public static int cercaMedico(ArrayList<Dottore>elencoM,String codice_fiscale){
+    public static int cercaMedico(ArrayList<Dottore>elencoM, String specializz){
         int i=0;
         for(Dottore dottore: elencoM){
-            if(dottore.codice_fiscale.equals(codice_fiscale) ){
+            if(dottore.specializzazione.equals(specializz) ){
                 i=elencoM.indexOf(dottore);
+                System.out.println(elencoM.get(i));
             }
         }
         return i;
     }
+    static void aggiungiPaziente(ArrayList<Paziente>elenco) {
 
-    static void aggiungiDottore(ArrayList<Dottore>elenco) {
-        Dottore d = new Dottore("0","0","0","0","0","0");
         Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Inserire le sue informazioni nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo, specializzazione");
+        System.out.println("Inserire le informazioni del paziente nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo");
+        System.out.println("La password viene preimpostata a '0000', si consiglia cambiarla al primo accesso");
 
         String s = scanner.nextLine();
-
         String[] arr = s.split(",");
-        d.nome = arr[0];
-        d.cognome = arr[1];
-        d.codice_fiscale = arr[2];
-        d.numero_telefono = arr[3];
-        d.indirizzo = arr[4];
-        d.password = "0000";
-        d.specializzazione = arr[5];
+        Paziente p = new Paziente(arr[0],arr[1],arr[2],arr[3],arr[4],0 );
+        elenco.add(p);
+        System.out.println(elenco + "\n");
 
-        elenco.add(d);
     }
-    HashMap<Dottore , ArrayList<Paziente>> h = new HashMap<Dottore, ArrayList<Paziente>>();
+    static ArrayList<Dottore> aggiungiDottore(ArrayList<Dottore>elenco, HashMap<Dottore ,ArrayList<Appuntamento>>h ) throws IOException,  {
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserire le informazioni del medico nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo,specializzazione");
+        System.out.println("La password viene preimpostata a '0000', si consiglia cambiarla al primo accesso");
+
+        String s = scanner.nextLine();
+        String[] arr = s.split(",");
+        Dottore d = new Dottore();
+
+        d.setNome(arr[0]);
+        d.setCognome(arr[1]);
+        d.setCodice_fiscale(arr[2]);
+        d.setNumero_telefono(arr[3]);
+        d.setIndirizzo(arr[4]);
+        d.setSpecializzazione(arr[5]);
+        d.password = "0000";
+        elenco.add(d);
+
+        ArrayList<Appuntamento>a= new ArrayList<>();
+        h.put(d,a);
+        caricaAppuntamenti(h);
+        stampaElencoMedici(elenco);
+        return elenco;
+    }
+    static void caricaMedici(ArrayList<Dottore>elencoM) throws IOException {
+
+        ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoMedici"));
+        fbinarioOut.writeObject(elencoM);
+        fbinarioOut.flush();
+        fbinarioOut.close();
+        PrintWriter ftestoOut = new PrintWriter(new FileWriter("ElencoMedici.txt"));
+        ftestoOut.println(elencoM);
+        ftestoOut.close();
+    }
     static ArrayList<Dottore>leggiDottori( ArrayList<Dottore> elencomedici) throws IOException, ClassNotFoundException {
         try {
+            FileInputStream cin = new FileInputStream("ElencoMedici");
+            ObjectInputStream fin = new ObjectInputStream(cin);
+            elencomedici = (ArrayList<Dottore>) fin.readObject();
 
+        } catch (IOException | ClassNotFoundException e) {
+            ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoMedici"));
+            fbinarioOut.writeObject(elencomedici);
+            fbinarioOut.flush();
+            fbinarioOut.close();
+            PrintWriter ftestoOut = new PrintWriter(new FileWriter("ElencoMedici.txt"));
+            ftestoOut.println(elencomedici);
+            ftestoOut.close();
+        }
+        return elencomedici;
+    }
+    static void aggiungiAppuntamento(HashMap<Dottore ,ArrayList<Appuntamento>>h,Paziente p, Dottore d) {
 
-            ObjectInputStream ffin = new ObjectInputStream(new FileInputStream("ElencoMedici"));
-            elencomedici = (ArrayList<Dottore>) ffin.readObject();
-            System.out.println("Caricare file binary");
+         //ai = h.get(d);
+        ArrayList<Appuntamento>ai = new ArrayList<>();
+        System.out.println("inserire ora dell'inizio, della fine dell'appuntamento e la descrizione della visita: ");
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
+        String[] arr = s.split(";");
+        Appuntamento a = new Appuntamento(arr[0],arr[1],arr[2],p,d);
+        ai.add(a);
+        h.put(d,ai);
+        System.out.println(h);
+        }
+    static HashMap leggiAppuntamenti(HashMap<Dottore ,ArrayList<Appuntamento>>h) throws IOException, ClassNotFoundException {
+        try {
+            FileInputStream cin = new FileInputStream("ElencoAppuntamento");
+            ObjectInputStream fin = new ObjectInputStream(cin);
+            h = (HashMap<Dottore, ArrayList<Appuntamento>>) fin.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
 
-
-            ObjectOutputStream filebinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoMedici"));
-            filebinarioOut.writeObject(elencomedici);
-            filebinarioOut.flush();
-            filebinarioOut.close();
-            PrintWriter filetestoOut = new PrintWriter(new FileWriter("ElencoMedici.txt"));
-            filetestoOut.println(elencomedici);
-            filetestoOut.close();
+            ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoAppuntamenti"));
+            fbinarioOut.writeObject(h);
+            fbinarioOut.flush();
+            fbinarioOut.close();
+            PrintWriter ftestoOut = new PrintWriter(new FileWriter("ElencoAppuntamenti.txt"));
+            ftestoOut.println(h);
+            ftestoOut.close();
         }
-        return elencomedici;
+        return h;
+    }
+    static void caricaAppuntamenti(HashMap<Dottore ,ArrayList<Appuntamento>>h) throws IOException{
+
+        ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoAppuntamenti"));
+        fbinarioOut.writeObject(h);
+        fbinarioOut.flush();
+        fbinarioOut.close();
+        PrintWriter ftestoOut = new PrintWriter(new FileWriter("ElencoAppuntamenti.txt"));
+        ftestoOut.println(h);
+        ftestoOut.close();
     }
     @Override
     public int hashCode() {
         return super.hashCode();
     }
-
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
-
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
     @Override
     public String toString() {
         return super.toString();
     }
+
 }

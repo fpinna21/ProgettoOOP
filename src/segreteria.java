@@ -22,4 +22,7 @@ public class segreteria {
         this.nome = nome;
         this.password = password;
     }
+
+
+
 }
