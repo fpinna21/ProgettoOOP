@@ -253,7 +253,7 @@ public class Main implements Serializable {
         System.out.println(elenco + "\n");
 
     }
-    static ArrayList<Dottore> aggiungiDottore(ArrayList<Dottore>elenco, HashMap<Dottore ,ArrayList<Appuntamento>>h ) throws IOException,  {
+    static ArrayList<Dottore> aggiungiDottore(ArrayList<Dottore>elenco, HashMap<Dottore ,ArrayList<Appuntamento>>h ) throws IOException  {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inserire le informazioni del medico nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo,specializzazione");
