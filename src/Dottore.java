@@ -1,3 +1,4 @@
+import javax.management.StringValueExp;
 import java.io.Serializable;
 
 public class Dottore
@@ -9,7 +10,16 @@ public class Dottore
     public String specializzazione;
     public String password;
     public String numero_telefono;
+    public Dottore(String s, String s1, String s2, String s3, String s4, String s5) {
+        this.nome = s;
+        this.cognome = s1;
+        this.codice_fiscale = s2;
+        this.indirizzo = s3;
+        this.specializzazione = s5;
+        this.numero_telefono = s4;
+        this.password = "0000";
 
+    }
     public Dottore() {
         super();
         this.nome = nome;
@@ -20,17 +30,6 @@ public class Dottore
         this.password = password;
         this.numero_telefono = numero_telefono;
     }
-
-    public Dottore(String s, String s1, String s2, String s3, String s4, String s5) {
-        this.nome = s;
-        this.cognome = s1;
-        this.codice_fiscale = s2;
-        this.indirizzo = s3;
-        this.specializzazione = s4;
-        this.password = "0000";
-        this.numero_telefono = s5;
-    }
-
     String getSpecializzazione() {
         return specializzazione;
     }

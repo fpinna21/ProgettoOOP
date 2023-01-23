@@ -1,25 +1,16 @@
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Appuntamento implements  Comparable < Appuntamento >{
+    public String ora_inizio;
+    public String ora_fine;
+    public Paziente cliente;
+    public Dottore medico;
+    public Date data;
+    public String descrizione;
 
-    private String ora_inizio;
-    private String ora_fine;
-    private Paziente cliente;
-    private Dottore medico;
-    private Date data;
-    private String descrizione;
-    public Appuntamento(String descrizione, String ora_inizio, String ora_fine, Paziente paziente, Dottore dottore) {
-        this.medico = dottore;
-        this.descrizione = descrizione;
-        this.ora_inizio = ora_inizio;
-        this.ora_fine = ora_fine;
-        this.cliente = paziente;
-
-    }
-
-
-
+    public HashMap<Dottore, ArrayList<Appuntamento>> h = new HashMap<>();
 
     public String getOra_inizio() {
         return ora_inizio;
@@ -27,7 +18,6 @@ public class Appuntamento implements  Comparable < Appuntamento >{
     public void setOra_inizio(String ora_inizio) {
         this.ora_inizio = ora_inizio;
     }
-
     public String getOra_fine() {
         return ora_fine;
     }
@@ -66,6 +56,23 @@ public class Appuntamento implements  Comparable < Appuntamento >{
         this.descrizione = descrizione;
     }
 
+    public Appuntamento() {
+        this.ora_inizio = null;
+        this.ora_fine = null;
+        this.cliente = null;
+        this.medico = null;
+        this.data = null;
+        this.descrizione = null;
+
+    }
+
+    public Appuntamento(String ora_inizio, String ora_fine, String descrizione, Paziente cliente, Dottore medico) {
+        this.ora_inizio = ora_inizio;
+        this.ora_fine = ora_fine;
+        this.cliente = cliente;
+        this.medico = medico;
+        this.descrizione = descrizione;
+    }
 
     @Override
     public int compareTo(Appuntamento o) {
