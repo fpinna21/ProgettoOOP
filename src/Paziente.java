@@ -1,5 +1,6 @@
 import java.io.*;
 
+
 public class Paziente
         extends Persona implements Serializable {
     public String nome;

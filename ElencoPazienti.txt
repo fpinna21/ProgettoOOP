@@ -1,1 +1,1 @@
-
+[Paziente{code_prenotazione='0', num_telefono='n', nome='n', cognome='n', codice_fiscale='n', indirizzo='n'}, Paziente{code_prenotazione='0', num_telefono='o', nome='o', cognome='o', codice_fiscale='o', indirizzo='o'}]

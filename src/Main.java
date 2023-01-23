@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.Scanner;
 import java.io.*;
 public class Main implements Serializable {
@@ -9,14 +8,16 @@ public class Main implements Serializable {
         ContoDati Registro;
         Registro = new ContoDati();
         Registro.leggiAppuntamenti();
-
+        Registro.leggiPazienti();
+        Registro.leggiDottori();
+        Registro.stampaElencoPazienti();
+        Registro.stampaElencoMedici();
         int indice;
 
         Dottore dottore;
         Paziente paziente;
         Registro.leggiPazienti();
         Registro.leggiDottori();
-        // stampaElencoPazienti(elencopazienti);
         System.out.println("""
                 Menu :\s
                  1)paziente
@@ -62,7 +63,7 @@ public class Main implements Serializable {
                                             int i;
                                             int c = 0;
                                             for (i = 0; i < Registro.elencoDott.size(); i++) {
-                                                if (Registro.getElencoDott().equals("fisioterapista")){
+                                                if (Registro.getElencoDott().get(i).specializzazione == "fisioterapista" ){
                                                     System.out.println(Registro.getElencoDott().get(i));
                                                     System.out.print("inserire numero: ");
                                                     System.out.println(i);
@@ -74,7 +75,7 @@ public class Main implements Serializable {
                                             } else {
                                                 System.out.println("scegli il tuo professionista");
                                                 int f = in.nextInt();
-                                                Registro.aggiungiAppuntamento(paziente,Registro.getElencoDott().get(f));
+                                                Registro.aggiungiAppuntamento(paziente, Registro.getElencoDott().get(f));
                                             }
                                             break;
                                     }break;
@@ -89,7 +90,7 @@ public class Main implements Serializable {
                                 case 4:
                                     System.out.println("inserire nuova password");
                                     paziente.password = in.next();
-                                    Registro.cambiaPassword(paziente,password);;
+                                    Registro.cambiaPassword(paziente,password);
                                     Registro.caricaFileBinario();
                                     System.out.println("password cambiata correttamente");
                                     break;
@@ -97,8 +98,9 @@ public class Main implements Serializable {
                         }break;
             case 2:
                 Registro.aggiungiPaziente();
+                Registro.stampaElencoPazienti();
                 Registro.caricaFileBinario();
-                Registro.getElencoPaz().get(Registro.getElencoPaz().size() - 1);
+
                 System.out.println("inserire la password");
                 String password1 = in.next();
                 if (password1.equals(Registro.getElencoPaz().get(Registro.getElencoPaz().size() - 1).password)) {

@@ -1,6 +1,5 @@
 import javax.management.StringValueExp;
-import java.io.Serializable;
-
+import java.io.*;
 public class Dottore
         extends Persona implements Serializable {
     public String nome;
@@ -15,8 +14,8 @@ public class Dottore
         this.cognome = s1;
         this.codice_fiscale = s2;
         this.indirizzo = s3;
-        this.specializzazione = s5;
         this.numero_telefono = s4;
+        this.specializzazione = s5;
         this.password = "0000";
 
     }
