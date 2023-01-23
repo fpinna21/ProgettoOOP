@@ -1,4 +1,3 @@
-import javax.management.StringValueExp;
 import java.io.*;
 public class Dottore
         extends Persona implements Serializable {
@@ -18,16 +17,6 @@ public class Dottore
         this.specializzazione = s5;
         this.password = "0000";
 
-    }
-    public Dottore() {
-        super();
-        this.nome = nome;
-        this.cognome = cognome;
-        this.codice_fiscale = codice_fiscale;
-        this.indirizzo = indirizzo;
-        this.specializzazione = specializzazione;
-        this.password = password;
-        this.numero_telefono = numero_telefono;
     }
     String getSpecializzazione() {
         return specializzazione;
@@ -89,6 +78,23 @@ public class Dottore
 
     public void setNumero_telefono(String numero_telefono) {
         this.numero_telefono = numero_telefono;
+    }
+
+    @Override
+    public String toString() {
+        return "Dottore{" +
+                "nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", codice_fiscale='" + codice_fiscale + '\'' +
+                ", indirizzo='" + indirizzo + '\'' +
+                ", specializzazione='" + specializzazione + '\'' +
+                ", password='" + password + '\'' +
+                ", numero_telefono='" + numero_telefono + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", codice_fiscale='" + codice_fiscale + '\'' +
+                ", indirizzo='" + indirizzo + '\'' +
+                '}';
     }
 }
 

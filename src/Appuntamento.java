@@ -78,6 +78,19 @@ public class Appuntamento implements  Comparable < Appuntamento >{
     public int compareTo(Appuntamento o) {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "Appuntamento{" +
+                "ora_inizio='" + ora_inizio + '\'' +
+                ", ora_fine='" + ora_fine + '\'' +
+                ", cliente=" + cliente +
+                ", medico=" + medico +
+                ", data=" + data +
+                ", descrizione='" + descrizione + '\'' +
+                ", h=" + h +
+                '}';
+    }
 }
 
 

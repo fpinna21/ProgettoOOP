@@ -29,20 +29,7 @@ public class ContoDati implements Serializable{
         }
         return elencoApp;
     }
-    ArrayList<Appuntamento> aggiungiAppuntamento(Paziente p, Dottore d) throws IOException {
 
-        elencoApp=leggiAppuntamenti();
-        ArrayList<Appuntamento> ai = new ArrayList<Appuntamento>(1);
-
-        System.out.println("inserire la data della visita: ");
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.nextLine();
-        String[] arr = s.split(";");
-        elencoApp.add(new Appuntamento(arr[0],arr[1],arr[2],p,d));
-
-        System.out.println(elencoApp);
-        return  elencoApp;
-    }
     ArrayList<Appuntamento>caricaAppuntamenti() throws IOException{
 
         ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoAppuntamenti"));
@@ -55,10 +42,6 @@ public class ContoDati implements Serializable{
 
         return elencoApp;
     }
-
-
-
-
     ArrayList<Paziente>leggiPazienti() throws IOException {
         try {
             FileInputStream cin = new FileInputStream("ElencoPazienti");
@@ -90,7 +73,7 @@ public class ContoDati implements Serializable{
             System.out.print(elencoPaz.get(i) + "\n");
         }
     }
-    public void caricaFileBinario() throws IOException, ClassNotFoundException {
+    public void caricaFileBinario() throws IOException {
 
         ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoPazienti"));
         fbinarioOut.writeObject(elencoPaz);
@@ -182,7 +165,20 @@ public class ContoDati implements Serializable{
         System.out.println(elencoDott + "\n");
         return elencoDott;
     }
+    ArrayList<Appuntamento> aggiungiAppuntamento(Paziente p, Dottore d) throws IOException {
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("inserire la data della visita: ");
+        ArrayList<Appuntamento> prova = new ArrayList<Appuntamento>(2);
+        prova=getElencoApp();
+        String s = scanner.nextLine();
+        String[] arr = s.split(";");
+        prova.add(new Appuntamento(arr[0],arr[1],arr[2],p,d));
+        setElencoApp(prova);
+
+        System.out.println(elencoApp);
+        return  elencoApp;
+    }
     void cambiaPassword(Paziente paziente, String passw){
 
         int i = elencoPaz.indexOf(paziente);
@@ -210,5 +206,13 @@ public class ContoDati implements Serializable{
         this.elencoPaz = new ArrayList<>();
         this.elencoDott = new ArrayList<>();
         this.elencoDott = new ArrayList<>();
+    }
+
+    public ArrayList<Appuntamento> getElencoApp() {
+        return elencoApp;
+    }
+
+    public void setElencoApp(ArrayList<Appuntamento> elencoApp) {
+        this.elencoApp = elencoApp;
     }
 }

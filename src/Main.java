@@ -63,7 +63,8 @@ public class Main implements Serializable {
                                             int i;
                                             int c = 0;
                                             for (i = 0; i < Registro.elencoDott.size(); i++) {
-                                                if (Registro.getElencoDott().get(i).specializzazione == "fisioterapista" ){
+                                                Dottore prova =Registro.getElencoDott().get(i);
+                                                if (prova.getSpecializzazione().equals("fisioterapista") ){
                                                     System.out.println(Registro.getElencoDott().get(i));
                                                     System.out.print("inserire numero: ");
                                                     System.out.println(i);
