@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Appuntamento implements  Comparable < Appuntamento >{
+public class Appuntamento implements Serializable {
     public String ora_inizio;
     public String ora_fine;
     public Paziente cliente;
@@ -75,8 +76,8 @@ public class Appuntamento implements  Comparable < Appuntamento >{
     }
 
     @Override
-    public int compareTo(Appuntamento o) {
-        return 0;
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     @Override
