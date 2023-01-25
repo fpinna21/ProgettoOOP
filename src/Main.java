@@ -1,9 +1,10 @@
 
+import java.text.ParseException;
 import java.util.Scanner;
 import java.io.*;
 public class Main implements Serializable {
     public static Scanner in = new Scanner(System.in);
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ParseException {
 
         ContoDati Registro;
         Registro = new ContoDati();
@@ -16,8 +17,8 @@ public class Main implements Serializable {
 
         Dottore dottore;
         Paziente paziente;
-        Registro.leggiPazienti();
-        Registro.leggiDottori();
+
+
         System.out.println("""
                 Menu :\s
                  1)paziente
@@ -77,7 +78,7 @@ public class Main implements Serializable {
                                                 System.out.println("scegli il tuo professionista");
                                                 int f = in.nextInt();
                                                 Registro.aggiungiAppuntamento(paziente, Registro.getElencoDott().get(f));
-                                                Registro.caricaAppuntamenti();
+                                                Registro.caricaAppuntamenti(Registro.getElencoPaz());
                                             }
                                             break;
                                     }break;
@@ -174,14 +175,7 @@ public class Main implements Serializable {
                 }
         }
     }
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
+
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

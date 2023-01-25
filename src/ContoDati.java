@@ -1,7 +1,9 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class ContoDati implements Serializable{
 
@@ -11,7 +13,7 @@ public class ContoDati implements Serializable{
 
 
 
-    ArrayList<Appuntamento>caricaAppuntamenti() throws IOException{
+    ArrayList<Appuntamento>caricaAppuntamenti(ArrayList<Paziente> elencoPaz) throws IOException{
 
         ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoAppuntamenti"));
         fbinarioOut.writeObject(elencoApp);
@@ -135,6 +137,8 @@ public class ContoDati implements Serializable{
         }
         return i;
     }
+
+
     void aggiungiPaziente() {
 
         Scanner scanner = new Scanner(System.in);
@@ -166,23 +170,24 @@ public class ContoDati implements Serializable{
         System.out.println(elencoDott + "\n");
         return elencoDott;
     }
-    ArrayList<Appuntamento> aggiungiAppuntamento(Paziente p, Dottore d) {
+    ArrayList<Appuntamento> aggiungiAppuntamento(Paziente p, Dottore d) throws ParseException, IOException {
         ArrayList<Appuntamento> prova = new ArrayList<>(1);
+
         if(elencoApp == null){
             Scanner scanner = new Scanner(System.in);
-            System.out.println("inserire la data della visita: ");
+            System.out.println("inserire la descrizione della visita: ");
             String s = scanner.nextLine();
-            String[] arr = s.split(";");
 
-            prova.add(new Appuntamento(arr[0], arr[1], arr[2], p, d));
+            prova.add(new Appuntamento( p, d, provaCalendario(d), s));
             setElencoApp(prova);
         }else {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("inserire la data della visita: ");
+            System.out.println("inserire la descrizione della visita: ");
             String s = scanner.nextLine();
-            String[] arr = s.split(";");
+
+
             prova = getElencoApp();
-            prova.add(new Appuntamento(arr[0], arr[1], arr[2], p, d));
+            prova.add(new Appuntamento( p, d, provaCalendario(d), s));
             setElencoApp(prova);
         }
         System.out.println(elencoApp);
@@ -214,7 +219,7 @@ public class ContoDati implements Serializable{
     public ContoDati() {
         this.elencoPaz = new ArrayList<>();
         this.elencoDott = new ArrayList<>();
-        this.elencoDott = new ArrayList<>();
+        this.elencoApp = new ArrayList<>();
     }
 
     public ArrayList<Appuntamento> getElencoApp() {
@@ -239,4 +244,111 @@ public class ContoDati implements Serializable{
                 ", elencoApp=" + elencoApp +
                 '}';
     }
-}
+
+    public LocalDateTime provaCalendario(Dottore d) throws ParseException, IOException {
+
+
+        System.out.println("Scrivere data calendario in formato [dd/mm/yyyy]");
+
+        Scanner tastiera = new Scanner(System.in);
+
+        String testo;
+
+        testo = tastiera.next();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date miaData = sdf.parse(testo);
+
+        Calendar calendario = Calendar.getInstance();
+
+        calendario.setTime(miaData);
+
+        int anno = calendario.get(Calendar.YEAR);
+        int mese = calendario.get(Calendar.MONTH) + 1;
+        int giorno = calendario.get(Calendar.DAY_OF_MONTH);
+        int ora = tastiera.nextInt();
+        int minuto = 00;
+
+        LocalDateTime day = LocalDateTime.of(anno,mese,giorno,ora,minuto);
+        ArrayList<Appuntamento> appuntamentos = cercaAppuntamenti(d,day);
+
+        boolean bisestile = anno % 400 == 0 || anno % 4 == 0 && anno % 100 != 0;
+
+        if (giorno <= 28 && mese == 2 && anno > 0) {
+            System.out.println(testo + " Data valida");
+
+        } else if (giorno == 29 && mese == 2 && bisestile) {
+            System.out.println(testo + " Anno bisestile");
+
+        } else if (giorno <= 30 && anno > 0 && mese == 4 || mese == 6 || mese == 9 || mese == 11) {
+            System.out.println(testo + " Data valida");
+
+        } else if (giorno <= 31 && anno > 0 && mese == 1 || mese == 3 || mese == 5 || mese == 7 || mese == 8 || mese == 10 || mese == 12) {
+            System.out.println(testo + " Data valida");
+
+
+        } else{
+
+            System.out.println("Data non valida");
+    }
+        return day;
+    }
+    public ArrayList<Appuntamento> cercaAppuntamenti(Dottore dottore,LocalDateTime data2) throws IOException {
+
+        boolean libero = false;
+
+        LocalDateTime[] orariPoss = new LocalDateTime[9];
+        orariPoss[0] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 8, 00,00);
+        orariPoss[1] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 9, 00,00);
+        orariPoss[2] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 10, 00,00);
+        orariPoss[3] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 11, 00,00);
+        orariPoss[4] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 12, 00,00);
+        orariPoss[5] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 15, 00,00);
+        orariPoss[6] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 16, 00,00);
+        orariPoss[7] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 17, 00,00);
+        orariPoss[8] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 18, 00,00);
+        leggiAppuntamenti();
+
+        while (libero == true){
+        int i;
+        int c =0;
+        int dim = elencoApp.size();
+        for ( i =0;i<dim;i++) {
+            Dottore d1 = elencoApp.get(i).getMedico();
+
+            if ( d1.equals(dottore) == true ){
+                LocalDateTime data1 =elencoApp.get(i).getData();
+                if(data1.equals(data2)== true){
+                    System.out.println("appuntamento non disponibile");
+                    for(i = 0; i<9;i++){
+                        if(orariPoss[i].equals(data2)){
+                            c++;
+                        }else {
+                            System.out.println(data2);
+                        }
+                    }
+                    if(c==9){
+                        System.out.println("Non ci sono posti liberi");
+                    }
+                    else{
+                        libero = true;
+                        System.out.println("inserire orario tra quelli visualizzati");
+                    }
+
+                    data2=LocalDateTime.from(data2.plus(1,ChronoUnit.DAYS));
+
+                }
+            }
+
+        }}
+        // if(elencoApp.get(i).contains())
+        return elencoApp;
+    }
+
+    }
+
+
+
+
+

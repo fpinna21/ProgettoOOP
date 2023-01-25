@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.Objects;
+
 public class Dottore
         extends Persona implements Serializable {
     public String nome;
@@ -18,48 +20,51 @@ public class Dottore
         this.password = "0000";
 
     }
-    String getSpecializzazione() {
-        return specializzazione;
-    }
+
     @Override
     public String getNome() {
-        return super.getNome();
+        return nome;
     }
 
     @Override
-    void setNome(String nome1) {
-        super.setNome(nome1);
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override
     public String getCognome() {
-        return super.getCognome();
+        return cognome;
     }
 
     @Override
-    void setCognome(String cognome1) {
-        super.setCognome(cognome1);
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
     }
 
     @Override
     public String getCodice_fiscale() {
-        return super.getCodice_fiscale();
+        return codice_fiscale;
     }
 
     @Override
-    void setCodice_fiscale(String codice_fiscale1) {
-        super.setCodice_fiscale(codice_fiscale1);
+    public void setCodice_fiscale(String codice_fiscale) {
+        this.codice_fiscale = codice_fiscale;
     }
 
     @Override
     public String getIndirizzo() {
-        return super.getIndirizzo();
+        return indirizzo;
     }
 
     @Override
-    void setIndirizzo(String indirizzo1) {
-        super.setIndirizzo(indirizzo1);
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
     }
+
+    public String getSpecializzazione() {
+        return specializzazione;
+    }
+
     public void setSpecializzazione(String specializzazione) {
         this.specializzazione = specializzazione;
     }
@@ -81,18 +86,26 @@ public class Dottore
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if ((o instanceof Dottore dottore)) return ((Dottore) o).getCodice_fiscale().equals(this.getCodice_fiscale());
+        if((o instanceof Dottore)) return ((Dottore) o).codice_fiscale.equals(this.codice_fiscale);
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNome(), getCognome(), getCodice_fiscale(), getIndirizzo(), getSpecializzazione(), getPassword(), getNumero_telefono());
+    }
+
+    @Override
     public String toString() {
         return "Dottore{" +
                 "nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
                 ", codice_fiscale='" + codice_fiscale + '\'' +
-                ", indirizzo='" + indirizzo + '\'' +
                 ", specializzazione='" + specializzazione + '\'' +
-                ", password='" + password + '\'' +
                 ", numero_telefono='" + numero_telefono + '\'' +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
-                ", codice_fiscale='" + codice_fiscale + '\'' +
                 ", indirizzo='" + indirizzo + '\'' +
                 '}';
     }

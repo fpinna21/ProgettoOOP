@@ -1,30 +1,24 @@
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Appuntamento implements Serializable {
-    public String ora_inizio;
-    public String ora_fine;
     public Paziente cliente;
     public Dottore medico;
-    public Date data;
+    public LocalDateTime data;
     public String descrizione;
+    public LocalTime oraFine;
 
-    public HashMap<Dottore, ArrayList<Appuntamento>> h = new HashMap<>();
+    public Appuntamento(Paziente cliente, Dottore medico, LocalDateTime data, String descrizione) {
+        this.cliente = cliente;
+        this.medico = medico;
+        this.data = data;
+        this.descrizione = descrizione;
+        this.oraFine = LocalTime.from(this.data.plus(1, ChronoUnit.HOURS));
+    }
 
-    public String getOra_inizio() {
-        return ora_inizio;
-    }
-    public void setOra_inizio(String ora_inizio) {
-        this.ora_inizio = ora_inizio;
-    }
-    public String getOra_fine() {
-        return ora_fine;
-    }
-    public void setOra_fine(String ora_fine) {
-        this.ora_fine = ora_fine;
-    }
     public Paziente getCliente() {
         return cliente;
     }
@@ -41,11 +35,11 @@ public class Appuntamento implements Serializable {
         this.medico = medico;
     }
 
-    public Date getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
@@ -57,40 +51,23 @@ public class Appuntamento implements Serializable {
         this.descrizione = descrizione;
     }
 
-    public Appuntamento() {
-        this.ora_inizio = null;
-        this.ora_fine = null;
-        this.cliente = null;
-        this.medico = null;
-        this.data = null;
-        this.descrizione = null;
-
+    public LocalTime getOraFine() {
+        return oraFine;
     }
 
-    public Appuntamento(String ora_inizio, String ora_fine, String descrizione, Paziente cliente, Dottore medico) {
-        this.ora_inizio = ora_inizio;
-        this.ora_fine = ora_fine;
-        this.cliente = cliente;
-        this.medico = medico;
-        this.descrizione = descrizione;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public void setOraFine(LocalTime oraFine) {
+        this.oraFine = oraFine;
     }
 
     @Override
     public String toString() {
         return "Appuntamento{" +
-                "ora_inizio='" + ora_inizio + '\'' +
-                ", ora_fine='" + ora_fine + '\'' +
-                ", cliente=" + cliente +
+                "cliente=" + cliente +
                 ", medico=" + medico +
                 ", data=" + data +
                 ", descrizione='" + descrizione + '\'' +
-                ", h=" + h +
-                '}';
+                ", oraFine=" + oraFine +
+                "} \n";
     }
 }
 
