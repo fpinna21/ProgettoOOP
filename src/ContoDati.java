@@ -2,7 +2,6 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ContoDati implements Serializable{
@@ -13,7 +12,7 @@ public class ContoDati implements Serializable{
 
 
 
-    ArrayList<Appuntamento>caricaAppuntamenti(ArrayList<Paziente> elencoPaz) throws IOException{
+    void caricaAppuntamenti() throws IOException{
 
         ObjectOutputStream fbinarioOut = new ObjectOutputStream(new FileOutputStream("ElencoAppuntamenti"));
         fbinarioOut.writeObject(elencoApp);
@@ -23,9 +22,8 @@ public class ContoDati implements Serializable{
         ftestoOut.println(elencoApp);
         ftestoOut.close();
 
-        return elencoApp;
     }
-    ArrayList<Paziente>leggiPazienti() throws IOException {
+    void leggiPazienti() throws IOException {
         try {
             FileInputStream cin = new FileInputStream("ElencoPazienti");
             ObjectInputStream fin = new ObjectInputStream(cin);
@@ -41,10 +39,9 @@ public class ContoDati implements Serializable{
             ftestoOut.println(elencoPaz);
             ftestoOut.close();
         }
-        return elencoPaz;
 
     }
-    ArrayList<Appuntamento> leggiAppuntamenti()  throws IOException {
+    void leggiAppuntamenti()  throws IOException {
         try {
             FileInputStream cin = new FileInputStream("ElencoAppuntamenti");
             ObjectInputStream fin = new ObjectInputStream(cin);
@@ -60,7 +57,6 @@ public class ContoDati implements Serializable{
             ftestoOut.println(elencoApp);
             ftestoOut.close();
         }
-        return elencoApp;
     }
 
     void stampaElencoMedici() {
@@ -101,7 +97,7 @@ public class ContoDati implements Serializable{
         ftOut.println(elencoApp);
         ftOut.close();
     }
-    ArrayList<Dottore>leggiDottori() throws IOException {
+    void leggiDottori() throws IOException {
         try {
             FileInputStream cin = new FileInputStream("ElencoMedici");
             ObjectInputStream fin = new ObjectInputStream(cin);
@@ -116,7 +112,6 @@ public class ContoDati implements Serializable{
             ftestoOut.println(elencoDott);
             ftestoOut.close();
         }
-        return elencoDott;
     }
     public int cercaPaziente(String codice_fiscale){
         int i=0;
@@ -130,7 +125,7 @@ public class ContoDati implements Serializable{
     public int cercaMedico(String specializz){
         int i=0;
         for(Dottore dottore: elencoDott){
-            if(dottore.specializzazione == specializz ){
+            if(dottore.specializzazione.equals(specializz)){
                 i=elencoDott.indexOf(dottore);
                 System.out.println(elencoDott.get(i));
             }
@@ -153,7 +148,7 @@ public class ContoDati implements Serializable{
         System.out.println(elencoPaz + "\n");
 
     }
-    ArrayList<Dottore> aggiungiDottore() throws IOException  {
+    void aggiungiDottore() throws IOException  {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inserire le informazioni del professionista nel seguente ordine intervallate da una virgola: nome, cognome, codice fiscale, numero di telefono, indirizzo,specializzazione");
@@ -168,9 +163,8 @@ public class ContoDati implements Serializable{
 
 
         System.out.println(elencoDott + "\n");
-        return elencoDott;
     }
-    ArrayList<Appuntamento> aggiungiAppuntamento(Paziente p, Dottore d) throws ParseException, IOException {
+    void aggiungiAppuntamento(Paziente p, Dottore d) throws ParseException, IOException {
         ArrayList<Appuntamento> prova = new ArrayList<>(1);
 
         if(elencoApp == null){
@@ -191,7 +185,6 @@ public class ContoDati implements Serializable{
             setElencoApp(prova);
         }
         System.out.println(elencoApp);
-        return  elencoApp;
     }
     void cambiaPassword(Paziente paziente, String passw){
 
@@ -204,8 +197,8 @@ public class ContoDati implements Serializable{
         return elencoDott;
     }
 
-    public static void setElencoDott(ArrayList<Dottore> elencoDott) {
-        elencoDott = elencoDott;
+    public void setElencoDott(ArrayList<Dottore> elencoDott) {
+        this.elencoDott = elencoDott;
     }
 
     public ArrayList<Paziente> getElencoPaz() {
@@ -247,12 +240,17 @@ public class ContoDati implements Serializable{
 
     public LocalDateTime provaCalendario(Dottore d) throws ParseException, IOException {
 
-
+int i;
+int c =0;
+int j;
         System.out.println("Scrivere data calendario in formato [dd/mm/yyyy]");
 
         Scanner tastiera = new Scanner(System.in);
 
         String testo;
+
+        boolean trovato = false;
+        boolean libero = true;
 
         testo = tastiera.next();
 
@@ -268,10 +266,48 @@ public class ContoDati implements Serializable{
         int mese = calendario.get(Calendar.MONTH) + 1;
         int giorno = calendario.get(Calendar.DAY_OF_MONTH);
         int ora = tastiera.nextInt();
-        int minuto = 00;
+        int minuto = 0;
+        int secondo =0;
 
-        LocalDateTime day = LocalDateTime.of(anno,mese,giorno,ora,minuto);
-        ArrayList<Appuntamento> appuntamentos = cercaAppuntamenti(d,day);
+        LocalDateTime day = LocalDateTime.of(anno,mese,giorno,ora,minuto,secondo);
+        LocalDateTime[] orariPoss = new LocalDateTime[9];
+        orariPoss[0] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 8, 0,0);
+        orariPoss[1] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 9, 0,0);
+        orariPoss[2] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 10, 0,0);
+        orariPoss[3] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 11, 0,0);
+        orariPoss[4] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 12, 0,0);
+        orariPoss[5] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 15, 0,0);
+        orariPoss[6] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 16, 0,0);
+        orariPoss[7] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 17, 0,0);
+        orariPoss[8] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 18, 0,0);
+        for (i =0;i<elencoApp.size();i++) {
+
+            if (elencoApp.get(i).getMedico().equals(d) && elencoApp.get(i).getData().equals(day)) {
+               System.out.println("Appuntamento non disponibile");
+               libero = false;
+            }
+        }
+        if(!libero){
+
+            for (i =0;i<elencoApp.size();i++) {
+
+                for (j=0; j<9;j++)
+                if (elencoApp.get(i).getMedico().equals(d) && orariPoss[j].equals(day)) {
+                    //System.out.println("Appuntamento non disponibile");
+                    c++;
+                }else{
+                    System.out.println("Scegliere tra quelli disponibili");
+                    System.out.print(orariPoss[j] + "       ");
+                }
+            }
+            if(c ==9){
+               // System.out.println("");
+
+            }
+        }
+
+
+
 
         boolean bisestile = anno % 400 == 0 || anno % 4 == 0 && anno % 100 != 0;
 
@@ -284,7 +320,7 @@ public class ContoDati implements Serializable{
         } else if (giorno <= 30 && anno > 0 && mese == 4 || mese == 6 || mese == 9 || mese == 11) {
             System.out.println(testo + " Data valida");
 
-        } else if (giorno <= 31 && anno > 0 && mese == 1 || mese == 3 || mese == 5 || mese == 7 || mese == 8 || mese == 10 || mese == 12) {
+        } else if ( anno > 0 && mese == 1 || mese == 3 || mese == 5 || mese == 7 || mese == 8 || mese == 10 || mese == 12) {
             System.out.println(testo + " Data valida");
 
 
@@ -294,27 +330,28 @@ public class ContoDati implements Serializable{
     }
         return day;
     }
-    public ArrayList<Appuntamento> cercaAppuntamenti(Dottore dottore,LocalDateTime data2) throws IOException {
+   /* public ArrayList<Appuntamento> cercaAppuntamenti(Dottore dottore,LocalDateTime data2) throws IOException {
 
         boolean libero = false;
 
         LocalDateTime[] orariPoss = new LocalDateTime[9];
-        orariPoss[0] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 8, 00,00);
-        orariPoss[1] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 9, 00,00);
-        orariPoss[2] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 10, 00,00);
-        orariPoss[3] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 11, 00,00);
-        orariPoss[4] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 12, 00,00);
-        orariPoss[5] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 15, 00,00);
-        orariPoss[6] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 16, 00,00);
-        orariPoss[7] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 17, 00,00);
-        orariPoss[8] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 18, 00,00);
+        orariPoss[0] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 8, 0,0);
+        orariPoss[1] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 9, 0,0);
+        orariPoss[2] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 10, 0,0);
+        orariPoss[3] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 11, 0,0);
+        orariPoss[4] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 12, 0,0);
+        orariPoss[5] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 15, 0,0);
+        orariPoss[6] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 16, 0,0);
+        orariPoss[7] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 17, 0,0);
+        orariPoss[8] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 18, 0,0);
         leggiAppuntamenti();
 
-        while (libero == true){
-        int i;
-        int c =0;
-        int dim = elencoApp.size();
-        for ( i =0;i<dim;i++) {
+        while (libero){
+            int c =0;
+            int i;
+            int dim = elencoApp.size();
+            i =0;
+             while (i<dim) {
             Dottore d1 = elencoApp.get(i).getMedico();
 
             if ( d1.equals(dottore) == true ){
@@ -326,26 +363,27 @@ public class ContoDati implements Serializable{
                             c++;
                         }else {
                             System.out.println(data2);
+                            if(c==9){
+                                System.out.println("Non ci sono posti liberi");
+                                data2=LocalDateTime.from(data2.plus(1,ChronoUnit.DAYS));
+
+                            }
                         }
-                    }
-                    if(c==9){
-                        System.out.println("Non ci sono posti liberi");
-                    }
-                    else{
-                        libero = true;
+
+
+                        //libero = true;
                         System.out.println("inserire orario tra quelli visualizzati");
+
                     }
-
-                    data2=LocalDateTime.from(data2.plus(1,ChronoUnit.DAYS));
-
                 }
             }
 
-        }}
-        // if(elencoApp.get(i).contains())
+                i++;
+            }
+
         return elencoApp;
     }
-
+}*/
     }
 
 

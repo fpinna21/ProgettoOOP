@@ -88,7 +88,7 @@ public class Dottore
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if ((o instanceof Dottore dottore)) return ((Dottore) o).getCodice_fiscale().equals(this.getCodice_fiscale());
+        if ((o instanceof Dottore Dottore)) return ((Dottore) o).getCodice_fiscale().equals(this.getCodice_fiscale());
         if((o instanceof Dottore)) return ((Dottore) o).codice_fiscale.equals(this.codice_fiscale);
         return false;
     }

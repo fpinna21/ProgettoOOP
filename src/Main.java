@@ -78,7 +78,7 @@ public class Main implements Serializable {
                                                 System.out.println("scegli il tuo professionista");
                                                 int f = in.nextInt();
                                                 Registro.aggiungiAppuntamento(paziente, Registro.getElencoDott().get(f));
-                                                Registro.caricaAppuntamenti(Registro.getElencoPaz());
+                                                Registro.caricaAppuntamenti();
                                             }
                                             break;
                                     }break;
