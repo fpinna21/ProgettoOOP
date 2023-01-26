@@ -2,6 +2,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class ContoDati implements Serializable{
@@ -240,9 +241,10 @@ public class ContoDati implements Serializable{
 
     public LocalDateTime provaCalendario(Dottore d) throws ParseException, IOException {
 
-int i;
-int c =0;
-int j;
+        int i;
+        int c =0;
+        int j;
+
         System.out.println("Scrivere data calendario in formato [dd/mm/yyyy]");
 
         Scanner tastiera = new Scanner(System.in);
@@ -250,7 +252,7 @@ int j;
         String testo;
 
         boolean trovato = false;
-        boolean libero = true;
+        boolean libero = false;
 
         testo = tastiera.next();
 
@@ -268,8 +270,8 @@ int j;
         int ora = tastiera.nextInt();
         int minuto = 0;
         int secondo =0;
-
         LocalDateTime day = LocalDateTime.of(anno,mese,giorno,ora,minuto,secondo);
+
         LocalDateTime[] orariPoss = new LocalDateTime[9];
         orariPoss[0] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 8, 0,0);
         orariPoss[1] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 9, 0,0);
@@ -280,35 +282,44 @@ int j;
         orariPoss[6] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 16, 0,0);
         orariPoss[7] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 17, 0,0);
         orariPoss[8] = LocalDateTime.of(day.getYear(),day.getMonth(), day.getDayOfMonth(), 18, 0,0);
-        for (i =0;i<elencoApp.size();i++) {
+        while (!trovato) {
+            for (i = 0; i < elencoApp.size(); i++) {
 
-            if (elencoApp.get(i).getMedico().equals(d) && elencoApp.get(i).getData().equals(day)) {
-               System.out.println("Appuntamento non disponibile");
-               libero = false;
-            }
-        }
-        if(!libero){
-
-            for (i =0;i<elencoApp.size();i++) {
-
-                for (j=0; j<9;j++)
-                if (elencoApp.get(i).getMedico().equals(d) && orariPoss[j].equals(day)) {
-                    //System.out.println("Appuntamento non disponibile");
-                    c++;
-                }else{
-                    System.out.println("Scegliere tra quelli disponibili");
-                    System.out.print(orariPoss[j] + "       ");
+                if (elencoApp.get(i).getMedico().equals(d) && elencoApp.get(i).getData().equals(day)) {
+                    System.out.println("Appuntamento non disponibile");
+                    //libero = false;
+                } else {
+                    libero = true;
+                    trovato = true;
                 }
             }
-            if(c ==9){
-               // System.out.println("");
 
+            if (!libero) {
+
+                for (i = 0; i < elencoApp.size(); i++) {
+
+                    for (j = 0; j < 9; j++)
+                        if (elencoApp.get(i).getMedico().equals(d) && orariPoss[j].equals(day)) {
+                            //System.out.println("Appuntamento non disponibile");
+                            c++;
+                        } else {
+                            Scanner orario = new Scanner(System.in);
+                            System.out.println("Scegliere tra quelli disponibili");
+                            System.out.print(orariPoss[j] + "       ");
+                            if (j == 8) {
+                                int ore = orario.nextInt();
+                                day = LocalDateTime.of(day.getYear(), day.getMonth(), day.getDayOfMonth(), ore, 0, 0);
+                                trovato = true;
+                            }
+                        }
+                }
+                if (c == 9) {
+                    // System.out.println("");
+                    day = LocalDateTime.from(day).plus(1, ChronoUnit.DAYS);
+
+                }
             }
         }
-
-
-
-
         boolean bisestile = anno % 400 == 0 || anno % 4 == 0 && anno % 100 != 0;
 
         if (giorno <= 28 && mese == 2 && anno > 0) {
@@ -330,60 +341,7 @@ int j;
     }
         return day;
     }
-   /* public ArrayList<Appuntamento> cercaAppuntamenti(Dottore dottore,LocalDateTime data2) throws IOException {
 
-        boolean libero = false;
-
-        LocalDateTime[] orariPoss = new LocalDateTime[9];
-        orariPoss[0] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 8, 0,0);
-        orariPoss[1] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 9, 0,0);
-        orariPoss[2] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 10, 0,0);
-        orariPoss[3] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 11, 0,0);
-        orariPoss[4] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 12, 0,0);
-        orariPoss[5] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 15, 0,0);
-        orariPoss[6] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 16, 0,0);
-        orariPoss[7] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 17, 0,0);
-        orariPoss[8] = LocalDateTime.of(data2.getYear(),data2.getMonth(), data2.getDayOfMonth(), 18, 0,0);
-        leggiAppuntamenti();
-
-        while (libero){
-            int c =0;
-            int i;
-            int dim = elencoApp.size();
-            i =0;
-             while (i<dim) {
-            Dottore d1 = elencoApp.get(i).getMedico();
-
-            if ( d1.equals(dottore) == true ){
-                LocalDateTime data1 =elencoApp.get(i).getData();
-                if(data1.equals(data2)== true){
-                    System.out.println("appuntamento non disponibile");
-                    for(i = 0; i<9;i++){
-                        if(orariPoss[i].equals(data2)){
-                            c++;
-                        }else {
-                            System.out.println(data2);
-                            if(c==9){
-                                System.out.println("Non ci sono posti liberi");
-                                data2=LocalDateTime.from(data2.plus(1,ChronoUnit.DAYS));
-
-                            }
-                        }
-
-
-                        //libero = true;
-                        System.out.println("inserire orario tra quelli visualizzati");
-
-                    }
-                }
-            }
-
-                i++;
-            }
-
-        return elencoApp;
-    }
-}*/
     }
 
 
